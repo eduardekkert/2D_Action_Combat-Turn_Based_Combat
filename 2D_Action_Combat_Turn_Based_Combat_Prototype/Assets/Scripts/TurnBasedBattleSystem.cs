@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 
 public enum BattleState { PLAYERTURN, ENEMYTURN, NONE}
+public enum AttackType { NEUTRAL, FIRE, WATER, ICE}
 public class TurnBasedBattleSystem : MonoBehaviour
 
     
@@ -24,15 +25,30 @@ public class TurnBasedBattleSystem : MonoBehaviour
 
     public Enemy_Stats enemyStats;
 
+    public GameObject EnemyTargetBox;
+
 
     [SerializeField]
     GameObject Enemy;
+
+
+    [SerializeField]
+    List<GameObject> enemies = new List<GameObject>();
+
+    [SerializeField]
+    List<Transform> enemySpots = new List<Transform>();
+
+    [SerializeField]
+    List<GameObject> enemyButtons = new List<GameObject>();
+
 
     [SerializeField]
     GameObject Camera;
 
 
-    public BattleState state; 
+    public BattleState state;
+
+    public AttackType attackType;
 
     void Update()
     {
@@ -44,9 +60,30 @@ public class TurnBasedBattleSystem : MonoBehaviour
 
             //GameObject Enemy = GameObject.FindWithTag("Enemy");
             //Enemy.GetComponent<Enemy_Controller>().enabled = false;
-            Enemy.GetComponent<Enemy_Controller>().m_Speed = 0F;
-            Enemy.transform.position = new Vector2(5, -4);
+
+
+
+            for (int i=0; i< enemies.Count;i++)
+            {
+                enemies[i].GetComponent<Enemy_Controller>().m_Speed = 0F;
+                enemies[i].transform.position = enemySpots[i].position;
+            }
+            //Enemy.GetComponent<Enemy_Controller>().m_Speed = 0F;
+            //Enemy.transform.position = new Vector2(5, -4);
             //Enemy.GetComponent<Animator>().Play("Rogue_Idle_01");
+            
+                 for (int i = 0; i < enemyButtons.Count; i++)
+            {
+                if (i < enemies.Count)
+                {
+                    enemyButtons[i].SetActive(true);
+                }
+                else
+                {
+                    enemyButtons[i].SetActive(false);
+                }
+            }
+
 
             CommandoMenu.SetActive(true);
 
@@ -62,34 +99,34 @@ public class TurnBasedBattleSystem : MonoBehaviour
 
     }
 
-    IEnumerator PlayerNeutralAttack()
+    IEnumerator PlayerNeutralAttack(Enemy_Stats enemy)
     {
 
-        Enemy.GetComponent<Enemy_Stats>().TakeTurnBasedNeutralDamage(playerStats.BaseAttack);
+        enemy.TakeTurnBasedNeutralDamage(playerStats.BaseAttack);
         Debug.Log("Enemy Hit");
         yield return new WaitForSeconds(2f);
     }
 
-    IEnumerator PlayerFireAttack()
+    IEnumerator PlayerFireAttack(Enemy_Stats enemy)
     {
 
-        Enemy.GetComponent<Enemy_Stats>().TakeTurnBasedFireDamage(playerStats.BaseFireDamage);
+        enemy.TakeTurnBasedFireDamage(playerStats.BaseFireDamage);
         Debug.Log("Enemy Hit by FireAttack");
         yield return new WaitForSeconds(2f);
     }
 
-    IEnumerator PlayerWaterAttack()
+    IEnumerator PlayerWaterAttack(Enemy_Stats enemy)
     {
 
-        Enemy.GetComponent<Enemy_Stats>().TakeTurnBasedWaterDamage(playerStats.BaseWaterAttack);
+        enemy.TakeTurnBasedWaterDamage(playerStats.BaseWaterAttack);
         Debug.Log("Enemy Hit by WaterAttack");
         yield return new WaitForSeconds(2f);
     }
 
-    IEnumerator PlayerIceAttack()
+    IEnumerator PlayerIceAttack(Enemy_Stats enemy)
     {
 
-        Enemy.GetComponent<Enemy_Stats>().TakeTurnBasedIceDamage(playerStats.BaseIceAttack);
+        enemy.TakeTurnBasedIceDamage(playerStats.BaseIceAttack);
         Debug.Log("Enemy Hit by IceAttack");
         yield return new WaitForSeconds(2f);
     }
@@ -107,23 +144,52 @@ public class TurnBasedBattleSystem : MonoBehaviour
         if (state != BattleState.PLAYERTURN)
             return;
 
+        EnemyTargetBox.SetActive(false);
         ChoiceBox.SetActive(false);
         AttackBox.SetActive(true);
         
     }
 
-    public void OnNeutralAttackButton()
+    public void OnEnemyTargetButtonClicked(int enemyId)
     {
-        StartCoroutine(PlayerNeutralAttack());
-
-        if (Enemy.GetComponent<Enemy_Stats>().Health <= 0)
+        switch (attackType)
         {
-            Enemy.GetComponent<Enemy_Stats>().Die();
-            CommandoMenu.SetActive(false);
-            AttackBox.SetActive(false);
-            GetComponent<Player_Controller>().enabled = true;
-            Player.transform.position = new Vector2(-5, -3);
-            state = BattleState.NONE;
+            case AttackType.NEUTRAL:
+                NeutralAttack(enemies[enemyId].GetComponent<Enemy_Stats>());
+                break;
+          
+               
+
+            case AttackType.FIRE:
+                FireAttack(enemies[enemyId].GetComponent<Enemy_Stats>());
+                break;
+
+            case AttackType.WATER:
+                WaterAttack(enemies[enemyId].GetComponent<Enemy_Stats>());
+                break;
+
+            case AttackType.ICE:
+                IceAttack(enemies[enemyId].GetComponent<Enemy_Stats>());
+                break;
+        }
+
+
+        
+    }
+
+    private void NeutralAttack(Enemy_Stats enemy)
+    {
+        StartCoroutine(PlayerNeutralAttack(enemy));
+
+        if (enemy.Health <= 0)
+        {
+            enemy.Die();
+            if (enemies.Count <= 0)
+                CommandoMenu.SetActive(false);
+                AttackBox.SetActive(false);
+                GetComponent<Player_Controller>().enabled = true;
+                Player.transform.position = new Vector2(-5, -3);
+                state = BattleState.NONE;
         }
 
         else
@@ -132,6 +198,50 @@ public class TurnBasedBattleSystem : MonoBehaviour
             StartCoroutine(EnemyNeutralAttack());
             state = BattleState.PLAYERTURN;
         }
+    }
+
+    public void OnNeutralAttackButton()
+    {
+        attackType = AttackType.NEUTRAL;
+        EnemyTargetBox.SetActive(true);
+        ChoiceBox.SetActive(false);
+        AttackBox.SetActive(false);
+       
+
+
+
+
+
+    }
+    private void FireAttack(Enemy_Stats enemy)
+    {
+        StartCoroutine(PlayerFireAttack(enemy));
+
+        if (enemy.Health <= 0)
+        {
+            enemy.Die();
+            if (enemies.Count <= 0)
+                CommandoMenu.SetActive(false);
+                AttackBox.SetActive(false);
+                GetComponent<Player_Controller>().enabled = true;
+                Player.transform.position = new Vector2(-5, -3);
+                state = BattleState.NONE;
+        }
+
+        else
+        {
+            state = BattleState.ENEMYTURN;
+            StartCoroutine(EnemyNeutralAttack());
+            state = BattleState.PLAYERTURN;
+        }
+    }
+    public void OnFireAttackButton()
+    {
+        attackType = AttackType.FIRE;
+        EnemyTargetBox.SetActive(true);
+        ChoiceBox.SetActive(false);
+        AttackBox.SetActive(false);
+
 
 
 
@@ -139,18 +249,19 @@ public class TurnBasedBattleSystem : MonoBehaviour
 
     }
 
-    public void OnFireAttackButton()
+    private void WaterAttack(Enemy_Stats enemy)
     {
-        StartCoroutine(PlayerFireAttack());
+        StartCoroutine(PlayerWaterAttack(enemy));
 
-        if (Enemy.GetComponent<Enemy_Stats>().Health <= 0)
+        if (enemy.Health <= 0)
         {
-            Enemy.GetComponent<Enemy_Stats>().Die();
-            CommandoMenu.SetActive(false);
-            AttackBox.SetActive(false);
-            GetComponent<Player_Controller>().enabled = true;
-            Player.transform.position = new Vector2(-5, -3);
-            state = BattleState.NONE;
+            enemy.Die();
+            if (enemies.Count <= 0)
+                    CommandoMenu.SetActive(false);
+                    AttackBox.SetActive(false);
+                    GetComponent<Player_Controller>().enabled = true;
+                    Player.transform.position = new Vector2(-5, -3);
+                    state = BattleState.NONE;
         }
 
         else
@@ -159,52 +270,33 @@ public class TurnBasedBattleSystem : MonoBehaviour
             StartCoroutine(EnemyNeutralAttack());
             state = BattleState.PLAYERTURN;
         }
-
-
-
-
-
     }
 
     public void OnWaterAttackButton()
     {
-        StartCoroutine(PlayerWaterAttack());
-
-        if (Enemy.GetComponent<Enemy_Stats>().Health <= 0)
-        {
-            Enemy.GetComponent<Enemy_Stats>().Die();
-            CommandoMenu.SetActive(false);
-            AttackBox.SetActive(false);
-            GetComponent<Player_Controller>().enabled = true;
-            Player.transform.position = new Vector2(-5, -3);
-            state = BattleState.NONE;
-        }
-
-        else
-        {
-            state = BattleState.ENEMYTURN;
-            StartCoroutine(EnemyNeutralAttack());
-            state = BattleState.PLAYERTURN;
-        }
-
+        attackType = AttackType.WATER;
+        EnemyTargetBox.SetActive(true);
+        ChoiceBox.SetActive(false);
+        AttackBox.SetActive(false);
 
 
 
 
     }
 
-    public void OnIceAttackButton()
+    private void IceAttack(Enemy_Stats enemy)
     {
-        StartCoroutine(PlayerIceAttack());
+        StartCoroutine(PlayerIceAttack(enemy));
 
-        if (Enemy.GetComponent<Enemy_Stats>().Health <= 0)
+        if (enemy.Health <= 0)
         {
-            Enemy.GetComponent<Enemy_Stats>().Die();
-            CommandoMenu.SetActive(false);
-            AttackBox.SetActive(false);
-            GetComponent<Player_Controller>().enabled = true;
-            Player.transform.position = new Vector2(-5, -3);
-            state = BattleState.NONE;
+            enemy.Die();
+            if (enemies.Count <= 0)
+                CommandoMenu.SetActive(false);
+                AttackBox.SetActive(false);
+                GetComponent<Player_Controller>().enabled = true;
+                Player.transform.position = new Vector2(-5, -3);
+                state = BattleState.NONE;
         }
 
         else
@@ -213,6 +305,13 @@ public class TurnBasedBattleSystem : MonoBehaviour
             StartCoroutine(EnemyNeutralAttack());
             state = BattleState.PLAYERTURN;
         }
+    }
+    public void OnIceAttackButton()
+    {
+        attackType = AttackType.ICE;
+        EnemyTargetBox.SetActive(true);
+        ChoiceBox.SetActive(false);
+        AttackBox.SetActive(false);
 
 
 
@@ -226,6 +325,11 @@ public class TurnBasedBattleSystem : MonoBehaviour
         ChoiceBox.SetActive(true);
     }
 
+    public void OnBackToAttackBoxButton()
+    {
+        AttackBox.SetActive(true);
+        EnemyTargetBox.SetActive(false);
+    }
     public void OnRevertButton()
     {
         GetComponent<Player_Controller>().enabled = true;
