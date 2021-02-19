@@ -30,7 +30,7 @@ public class Player_Stats : MonoBehaviour
     }
 
     [SerializeField]
-    int baseAttack = 10;
+    int baseAttack = 15;
     public int BaseAttack
     {
         get { return baseAttack; }
@@ -38,7 +38,7 @@ public class Player_Stats : MonoBehaviour
     }
 
     [SerializeField]
-    int baseDefense = 1;
+    int baseDefense = 10;
     public int BaseDefense
     {
         get { return baseDefense; }
@@ -54,7 +54,7 @@ public class Player_Stats : MonoBehaviour
     }
 
     [SerializeField]
-    int baseFireDamage = 5;
+    int baseFireDamage = 15;
     public int BaseFireDamage
     {
         get { return baseFireDamage; }
@@ -70,7 +70,7 @@ public class Player_Stats : MonoBehaviour
     }
 
     [SerializeField]
-    int baseWaterAttack = 5;
+    int baseWaterAttack = 15;
     public int BaseWaterAttack
     {
         get { return baseWaterAttack; }

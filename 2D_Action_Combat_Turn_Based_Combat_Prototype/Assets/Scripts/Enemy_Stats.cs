@@ -35,7 +35,7 @@ public class Enemy_Stats : MonoBehaviour
     }
 
     [SerializeField]
-    int baseDefense = 1;
+    int baseDefense = 10;
     public int BaseDefense
     {
         get { return baseDefense; }
@@ -59,7 +59,7 @@ public class Enemy_Stats : MonoBehaviour
     }
 
     [SerializeField]
-    int baseFireDefense = 5;
+    int baseFireDefense = 13;
     public int BaseFireDefense
     {
         get { return baseFireDefense; }
@@ -198,6 +198,36 @@ public class Enemy_Stats : MonoBehaviour
         
     }
 
-    
+    public void TakeTurnBasedFireDamage(int dmg)
+    {
+        dmg -= this.BaseFireDefense;
 
+        dmg = Mathf.Clamp(dmg, 1, int.MaxValue);
+        AffectHealth(-dmg);
+        Debug.Log("Enemy Health is" + this.Health);
+
+
+    }
+
+    public void TakeTurnBasedWaterDamage(int dmg)
+    {
+        dmg -= this.BaseWaterDefense;
+
+        dmg = Mathf.Clamp(dmg, 1, int.MaxValue);
+        AffectHealth(-dmg);
+        Debug.Log("Enemy Health is" + this.Health);
+
+
+    }
+
+    public void TakeTurnBasedIceDamage(int dmg)
+    {
+        dmg -= this.BaseIceDefense;
+
+        dmg = Mathf.Clamp(dmg, 1, int.MaxValue);
+        AffectHealth(-dmg);
+        Debug.Log("Enemy Health is" + this.Health);
+
+
+    }
 }

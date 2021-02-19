@@ -252,7 +252,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &84878369
 Transform:
   m_ObjectHideFlags: 0
@@ -1015,7 +1015,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 306185148}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 941595768}
+        m_TargetAssemblyTypeName: TurnBasedBattleSystem, Assembly-CSharp
+        m_MethodName: OnBackButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &306185148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1182,7 +1194,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 332719708}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 941595768}
+        m_TargetAssemblyTypeName: TurnBasedBattleSystem, Assembly-CSharp
+        m_MethodName: OnRevertButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &332719708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1892,7 +1916,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 626295356}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 941595768}
+        m_TargetAssemblyTypeName: TurnBasedBattleSystem, Assembly-CSharp
+        m_MethodName: OnWaterAttackButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &626295356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2463,7 +2499,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 775366005}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 941595768}
+        m_TargetAssemblyTypeName: TurnBasedBattleSystem, Assembly-CSharp
+        m_MethodName: OnFireAttackButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &775366005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2877,14 +2925,14 @@ MonoBehaviour:
   currentHealth: 0
   currentMana: 0
   maxHealth: 100
-  baseAttack: 10
-  baseDefense: 1
+  baseAttack: 15
+  baseDefense: 5
   baseSpeed: 10
-  baseFireDamage: 5
+  baseFireDamage: 15
   baseFireDefense: 5
-  baseWaterAttack: 5
+  baseWaterAttack: 15
   baseWaterDefense: 5
-  baseIceAttack: 5
+  baseIceAttack: 15
   baseIceDefense: 5
 --- !u!70 &941595774
 CapsuleCollider2D:
@@ -3189,8 +3237,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1110190802}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.45, y: -0.77, z: 0.75916773}
-  m_LocalScale: {x: 4.971764, y: 8.238262, z: 1}
+  m_LocalPosition: {x: 12.8, y: -3.9, z: 0.75916773}
+  m_LocalScale: {x: 10.077706, y: 16.698858, z: 2.026988}
   m_Children: []
   m_Father: {fileID: 84878369}
   m_RootOrder: 0
@@ -3402,15 +3450,15 @@ MonoBehaviour:
   maxHealth: 100
   currentMana: 0
   maxMana: 100
-  baseAttack: 5
-  baseDefense: 5
+  baseAttack: 10
+  baseDefense: 10
   baseSpeed: 10
   baseFireDamage: 5
-  baseFireDefense: 5
+  baseFireDefense: 12
   baseWaterAttack: 5
   baseWaterDefense: 5
   baseIceAttack: 5
-  baseIceDefense: 5
+  baseIceDefense: 15
 --- !u!1 &1168441855
 GameObject:
   m_ObjectHideFlags: 0
@@ -3522,7 +3570,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1224411574}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 941595768}
+        m_TargetAssemblyTypeName: TurnBasedBattleSystem, Assembly-CSharp
+        m_MethodName: OnIceAttackButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1224411574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4014,7 +4074,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1494512581}
   m_Layer: 0
-  m_Name: PlayerSpot (1)
+  m_Name: EnemySpot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
